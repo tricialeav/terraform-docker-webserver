@@ -1,0 +1,11 @@
+name: Terraform-Validation
+
+on:
+  push:
+    branches: 
+
+
+jobs:
+  terraform-fmt:
+    name: Terraform format
+    runs-on: ubuntu-latest
