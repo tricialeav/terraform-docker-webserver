@@ -3,6 +3,10 @@ name: Terraform-Validation
 on:
   push:
     branches: 
+    - '!master'
+    - '!release'
+    - '!dev'
+
 
 
 jobs:
