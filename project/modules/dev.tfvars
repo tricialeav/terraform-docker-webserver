@@ -1,4 +1,4 @@
-region = "us-west-2"
-env    = "dev"
-prefix = "tf-docker"
+region  = "us-west-2"
+env     = "dev"
+prefix  = "tf-docker"
 enabled = true

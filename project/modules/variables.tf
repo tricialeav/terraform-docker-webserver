@@ -15,5 +15,5 @@ variable "env" {
 
 variable "enabled" {
   description = "Flag to enable resources."
-  type = bool
+  type        = bool
 }

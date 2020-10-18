@@ -21,10 +21,10 @@ variable "tags" {
 
 variable "subnets" {
   description = "The subnets to assign to the VPC."
-  type = list(string)
+  type        = list(string)
 }
 
 variable "availability_zones" {
   description = "The availabiltiy zone(s) for the subnets."
-  type = list(string)
+  type        = list(string)
 }

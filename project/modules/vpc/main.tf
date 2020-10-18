@@ -6,9 +6,9 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_subnet" "subnet" {
-  count = length(var.subnets)
-  vpc_id     = aws_vpc.vpc.id
+  count             = length(var.subnets)
+  vpc_id            = aws_vpc.vpc.id
   availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
-  cidr_block = var.subnets[count.index]
-  tags = var.tags
+  cidr_block        = var.subnets[count.index]
+  tags              = var.tags
 }
