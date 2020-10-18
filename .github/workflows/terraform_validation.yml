@@ -21,14 +21,11 @@ jobs:
         uses: hashicorp/setup-terraform@v1
       - name: Terraform Format
         id: fmt
-        run: echo Checking Terraform Format
         run: terraform fmt -check
       - name: Terraform init
         id: init
-        run: echo Initializing Terraform
         run: terraform init
       - name: Terraform Validate
         id: validate
-        run: echo Validating Terraform
         run: terraform validate
         
