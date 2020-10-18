@@ -1,5 +1,5 @@
 data "aws_subnet" "public" {
-  tags {
+  tags = {
     type = "public"
   }
 }
