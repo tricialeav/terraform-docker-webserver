@@ -1,4 +1,4 @@
-name: Terraform-Plan
+name: Terraform-Pipeline
 
 on:
   push:
@@ -10,9 +10,9 @@ defaults:
     working-directory: project/deployments
 
 jobs:
-  terraform-validate:
+  terraform-validation:
     runs-on: ubuntu-latest
-    name: Validates Terraform
+    name: Validates and applies Terraform to AWS
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,14 +31,14 @@ jobs:
         id: initDev
         if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
         run: terraform init -backend-config="bucket=terraform-docker-webserver-dev-terraform-tf-state" -backend-config="key=deployments/environments/dev/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-dev-terraform-tf-state-lock"
-      # - name: Terraform Init - QA
-      #   id: initQA
-      #   if: github.ref == 'refs/heads/release'
-      #   run: terraform init -backend-config="bucket=terraform-docker-webserver-qa-terraform-tf-state" -backend-config="key=deployments/environments/qa/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-qa-terraform-tf-state-lock"
-      # - name: Terraform Init - Prod
-      #   id: initProd
-      #   if: github.ref == 'refs/heads/master'
-      #   run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
+      - name: Terraform Init - QA
+        id: initQA
+        if: github.ref == 'refs/heads/release'
+        run: terraform init -backend-config="bucket=terraform-docker-webserver-qa-terraform-tf-state" -backend-config="key=deployments/environments/qa/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-qa-terraform-tf-state-lock"
+      - name: Terraform Init - Prod
+        id: initProd
+        if: github.ref == 'refs/heads/master'
+        run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
       - name: Terraform Validate
         id: validate
         run: terraform validate
