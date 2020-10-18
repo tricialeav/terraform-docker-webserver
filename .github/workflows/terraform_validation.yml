@@ -2,10 +2,9 @@ name: Terraform-Validation
 
 on:
   push:
-    branches: 
-    - '!master'
-    - '!release'
-    - '!dev'
+    branches-ignore: 
+    - 'master'
+    - 'release'
 
 defaults:
   run:
