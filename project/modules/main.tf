@@ -6,7 +6,12 @@ terraform {
     }
   }
 
-  backend "s3" {
+  backend "s3" {}
+}
+
+data "terraform_remote_state" "state" {
+  backend = "s3"
+  config {
     region         = var.region
     bucket         = var.backend_state_bucket
     key            = "deployments/environments/${var.env}/project/terraform.tfstate"
