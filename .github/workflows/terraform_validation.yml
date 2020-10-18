@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: project/deployments
+    working-directory: project/modules
 
 jobs:
   terraform-validate:
