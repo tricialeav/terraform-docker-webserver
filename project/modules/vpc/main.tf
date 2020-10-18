@@ -1,30 +1,14 @@
-resource "aws_vpc" "main" {
+resource "aws_vpc" "vpc" {
   cidr_block           = var.cidr_block
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
   tags                 = var.tags
 }
 
-resource "aws_subnet" "public1" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.0.0/24"
-  tags = var.tags
-}
-
-resource "aws_subnet" "public2" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.1.0/24"
-  tags = var.tags
-}
-
-resource "aws_subnet" "private1" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.2.0/24"
-  tags = var.tags
-}
-
-resource "aws_subnet" "private2" {
-  vpc_id     = aws_vpc.main.id
-  cidr_block = "10.0.3.0/24"
+resource "aws_subnet" "subnet" {
+  count = length(var.subnets)
+  vpc_id     = aws_vpc.vpc.id
+  availability_zone = var.availability_zones[count.index % length(var.availability_zones)]
+  cidr_block = var.subnets[count.index]
   tags = var.tags
 }
