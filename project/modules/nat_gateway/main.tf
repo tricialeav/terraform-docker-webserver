@@ -13,6 +13,5 @@ resource "aws_nat_gateway" "gw" {
   count         = length(data.aws_subnet.public)
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = data.aws_subnet.public.id[count.index]
-
-  tags = var.tags
+  tags          = var.tags
 }
