@@ -19,8 +19,13 @@ variable "tags" {
   type        = map(string)
 }
 
-variable "subnets" {
-  description = "The subnets to assign to the VPC."
+variable "public_subnets" {
+  description = "The public subnets to assign to the VPC."
+  type        = list(string)
+}
+
+variable "private_subnets" {
+  description = "The private subnets to assign to the VPC."
   type        = list(string)
 }
 

@@ -5,13 +5,22 @@ resource "aws_vpc" "vpc" {
   tags                 = var.tags
 }
 
-resource "aws_subnet" "subnet" {
-  count                   = length(var.subnets)
+resource "aws_subnet" "public_subnets" {
+  count                   = length(var.public_subnets)
   vpc_id                  = aws_vpc.vpc.id
   availability_zone       = var.availability_zones[count.index % length(var.availability_zones)]
-  map_public_ip_on_launch = count.index % length(var.availability_zones) == 0 ? true : false
-  cidr_block              = var.subnets[count.index]
-  tags                    = count.index % length(var.availability_zones) == 0 ? merge(var.tags, { type = "public" }) : merge(var.tags, { type = "private" })
+  map_public_ip_on_launch = true
+  cidr_block              = var.public_subnets[count.index]
+  tags                    = merge(var.tags, { type = "public" })
+}
+
+resource "aws_subnet" "private_subnets" {
+  count                   = length(var.private_subnets)
+  vpc_id                  = aws_vpc.vpc.id
+  availability_zone       = var.availability_zones[count.index % length(var.availability_zones)]
+  map_public_ip_on_launch = false
+  cidr_block              = var.private_subnets[count.index]
+  tags                    = merge(var.tags, { type = "private" })
 }
 
 resource "aws_internet_gateway" "gw" {
