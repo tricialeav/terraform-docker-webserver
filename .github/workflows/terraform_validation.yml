@@ -1,11 +1,9 @@
-name: Terraform-Validation
+name: Terraform-Plan
 
 on:
   push:
     branches: 
-    - '!master'
-    - '!release'
-    - '!dev'
+    - '*'
 
 defaults:
   run:
@@ -20,16 +18,31 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
       - name: Terraform Format
         id: fmt
-        run: echo Checking Terraform Format
         run: terraform fmt -check
       - name: Terraform init
         id: init
-        run: echo Initializing Terraform
         run: terraform init
       - name: Terraform Validate
         id: validate
-        run: echo Validating Terraform
         run: terraform validate
+      - name: Terraform Plan - Dev
+        id: planDev
+        if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
+        run: terraform plan -var-file="dev.tfvars"
+      - name: Terraform Plan - QA
+        id: planQa
+        if: github.ref == 'refs/heads/release'
+        run: terraform plan -var-file="qa.tfvars"
+      - name: Terraform Plan - Prod
+        id: planMaster
+        if: github.ref == 'refs/heads/master'
+        run: terraform plan -var-file="prod.tfvars"
         
