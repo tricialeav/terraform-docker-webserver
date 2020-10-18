@@ -1,10 +1,11 @@
-name: Terraform-Validation
+name: Terraform-Apply
 
 on:
   push:
-    branches-ignore: 
+    branches: 
     - 'master'
     - 'release'
+    - 'dev'
 
 defaults:
   run:
@@ -34,7 +35,16 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate
-      - name: Terraform Plan
+      - name: Terraform Plan - Dev
         id: plan
+        if: github.ref != 'refs/heads/release' || github.ref != 'refs/heads/master'
         run: terraform plan -var-file="dev.tfvars"
+      - name: Terraform Plan - QA
+        id: plan
+        if: github.ref == 'refs/heads/release'
+        run: terraform plan -var-file="qa.tfvars"
+      - name: Terraform Plan - Prod
+        id: plan
+        if: github.ref == 'refs/heads/master'
+        run: terraform plan -var-file="prod.tfvars"
         
