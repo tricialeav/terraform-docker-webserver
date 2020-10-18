@@ -5,6 +5,8 @@ terraform {
       version = "~> 3.0"
     }
   }
+
+  backend "s3" {}
 }
 
 # Configure the AWS Provider
@@ -12,10 +14,11 @@ provider "aws" {
   region = var.region
 }
 
-module "remote_state_backend" {
-  source    = "../modules/remote_state_backend"
-  namespace = var.prefix
-  stage     = var.env
+module "vpc" {
+  source     = "./vpc"
+  cidr_block = "10.0.0.0/16"
+  tags = {
+    name = var.prefix
+    env  = var.env
+  }
 }
-
-# pipeline test
