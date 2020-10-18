@@ -16,7 +16,7 @@ resource "aws_subnet" "subnet" {
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.vpc.id
-  tags = var.tags
+  tags   = var.tags
 }
 
 resource "aws_route_table" "public_rt" {
@@ -31,7 +31,7 @@ resource "aws_route_table" "public_rt" {
 }
 
 resource "aws_route_table_association" "public_subnet" {
-  count = length(var.subnets)
-  subnet_id      = count.index % length(var.availability_zones) == 0 ? aws_subnet.subnet[count.index].id : null
+  count          = length(var.availability_zones)
+  subnet_id      = aws_subnet.subnet[count.index].id
   route_table_id = aws_route_table.public_rt.id
 }
