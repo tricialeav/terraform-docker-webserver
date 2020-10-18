@@ -1,6 +1,6 @@
 variable "region" {
-    description = "The region used to deploy resources."
-    type = string
+  description = "The region used to deploy resources."
+  type        = string
 }
 
 variable "prefix" {
