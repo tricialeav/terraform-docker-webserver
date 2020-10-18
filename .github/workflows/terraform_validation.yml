@@ -28,15 +28,15 @@ jobs:
         id: fmt
         run: terraform fmt -check
       - name: Terraform Init - Dev
-        id: init
+        id: initDev
         if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
         run: terraform init -backend-config="bucket=terraform-docker-webserver-dev-terraform-tf-state" -backend-config="key=deployments/environments/dev/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-dev-terraform-tf-state-lock"
       - name: Terraform Init - QA
-        id: init
+        id: initQA
         if: github.ref == 'refs/heads/release'
         run: terraform init -backend-config="bucket=terraform-docker-webserver-qa-terraform-tf-state" -backend-config="key=deployments/environments/qa/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-qa-terraform-tf-state-lock"
       - name: Terraform Init - Prod
-        id: init
+        id: initProd
         if: github.ref == 'refs/heads/master'
         run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
       - name: Terraform Validate
