@@ -3,9 +3,7 @@ name: Terraform-Apply
 on:
   push:
     branches: 
-    - 'master'
-    - 'release'
-    - 'dev'
+    - '*'
 
 defaults:
   run:
