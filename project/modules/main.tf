@@ -14,6 +14,13 @@ provider "aws" {
   region = var.region
 }
 
+locals {
+  tags = {
+    name = var.prefix
+    env  = var.env
+  }
+}
+
 module "vpc" {
   count                = var.enabled ? 1 : 0
   source               = "./vpc"
@@ -22,14 +29,11 @@ module "vpc" {
   enable_dns_hostnames = true
   availability_zones   = ["us-west-2a", "us-west-2b"]
   subnets              = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
-  tags = {
-    name = var.prefix
-    env  = var.env
-  }
+  tags = local.tags
 }
 
 module "nat_gateway" {
   count  = var.enabled ? 1 : 0
   source = "./nat_gateway"
-
+  tags = local.tags
 }
