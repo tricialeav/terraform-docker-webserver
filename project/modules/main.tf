@@ -27,3 +27,9 @@ module "vpc" {
     env  = var.env
   }
 }
+
+module "nat_gateway" {
+  count = var.enabled ? 1 : 0
+  source = "./nat_gateway"
+  
+}
