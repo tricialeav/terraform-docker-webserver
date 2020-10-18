@@ -12,3 +12,8 @@ variable "env" {
   description = "The environmennt to deploy resources into."
   type        = string
 }
+
+variable "enabled" {
+  description = "Flag to enable resources."
+  type        = bool
+}

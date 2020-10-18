@@ -18,3 +18,13 @@ variable "tags" {
   description = "A map of tags to assign to the resource."
   type        = map(string)
 }
+
+variable "subnets" {
+  description = "The subnets to assign to the VPC."
+  type        = list(string)
+}
+
+variable "availability_zones" {
+  description = "The availabiltiy zone(s) for the subnets."
+  type        = list(string)
+}
