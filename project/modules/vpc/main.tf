@@ -11,7 +11,8 @@ resource "aws_subnet" "subnet" {
   availability_zone       = var.availability_zones[count.index % length(var.availability_zones)]
   map_public_ip_on_launch = count.index % length(var.availability_zones) == 0 ? true : false
   cidr_block              = var.subnets[count.index]
-  tags                    = count.index % length(var.availability_zones) == 0 ? merge(var.tags, {type = "public"}) : merge(var.tags, {type = "private"})
+  tags                    = count.index % length(var.availability_zones) == 0 ? merge(var.tags, { type = "public" }) : merge(var.tags, { type = "private" })
+}
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.vpc.id
