@@ -32,9 +32,3 @@ module "vpc" {
   private_subnets      = ["10.0.2.0/24", "10.0.3.0/24"]
   tags                 = local.tags
 }
-
-module "nat_gateway" {
-  count  = var.enabled ? 1 : 0
-  source = "./nat_gateway"
-  tags   = local.tags
-}
