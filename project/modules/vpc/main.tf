@@ -58,19 +58,18 @@ resource "aws_nat_gateway" "gw" {
 }
 
 resource "aws_route_table" "private_rt" {
-  count = length(aws_nat_gateway.gw.id)
+  count = length(var.public_subnets)
   vpc_id = aws_vpc.vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.gw[count.index].id
   }
-
   tags = var.tags
 }
 
 resource "aws_route_table_association" "private_subnet_rt" {
   count          = length(var.private_subnets)
   subnet_id      = aws_subnet.private_subnets[count.index].id
-  route_table_id = aws_route_table.private_rt.id
+  route_table_id = aws_route_table.private_rt[count.index].id
 }
