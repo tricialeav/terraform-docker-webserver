@@ -1,13 +1,13 @@
 data "aws_subnet" "public_subnets" {
-    tags = {
-        type = "public"
-    }
+  tags = {
+    type = "public"
+  }
 }
 
 data "aws_subnet" "private_subnets" {
-    tags = {
-        type = "private"
-    }
+  tags = {
+    type = "private"
+  }
 }
 
 resource "aws_eip" "nat" {
