@@ -36,7 +36,5 @@ module "vpc" {
 module "nat_gateway" {
   count              = var.enabled ? 1 : 0
   source             = "./nat_gateway"
-  public_subnet_ids  = module.vpc.public_subnet_ids[0]
-  private_subnet_ids = module.vpc.private_subnet_ids[0]
   tags               = local.tags
 }

@@ -1,11 +1,23 @@
+data "aws_subnet" "public_subnets" {
+    tags = {
+        type = "public"
+    }
+}
+
+data "aws_subnet" "private_subnets" {
+    tags = {
+        type = "private"
+    }
+}
+
 resource "aws_eip" "nat" {
   count = length(var.public_subnet_ids)
   vpc   = true
 }
 
 resource "aws_nat_gateway" "gw" {
-  count         = length(var.public_subnet_ids)
+  count         = length(data.aws_subnet_public_subnets)
   allocation_id = aws_eip.nat[count.index].id
-  subnet_id     = var.public_subnet_ids[count.index]
+  subnet_id     = data.public_subnets[count.index].id
   tags          = var.tags
 }
