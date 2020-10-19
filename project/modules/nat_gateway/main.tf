@@ -11,12 +11,12 @@ data "aws_subnet" "private_subnets" {
 }
 
 resource "aws_eip" "nat" {
-  count = length(var.public_subnet_ids)
+  count = length(data.aws_subnet.public_subnets)
   vpc   = true
 }
 
 resource "aws_nat_gateway" "gw" {
-  count         = length(data.aws_subnet_public_subnets)
+  count         = length(data.aws_subnet.public_subnets)
   allocation_id = aws_eip.nat[count.index].id
   subnet_id     = data.public_subnets[count.index].id
   tags          = var.tags
