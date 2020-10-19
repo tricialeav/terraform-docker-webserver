@@ -33,10 +33,10 @@ module "vpc" {
   tags                 = local.tags
 }
 
-# module "nat_gateway" {
-#   count  = var.enabled ? 1 : 0
-#   source = "./nat_gateway"
-#   public_subnet_ids = module.vpc.public_subnet_ids
-#   private_subnet_ids = module.vpc.private_subnet_ids
-#   tags   = local.tags
-# }
+module "nat_gateway" {
+  count  = var.enabled ? 1 : 0
+  source = "./nat_gateway"
+  public_subnet_ids = module.vpc.public_subnet_ids
+  private_subnet_ids = module.vpc.private_subnet_ids
+  tags   = local.tags
+}
