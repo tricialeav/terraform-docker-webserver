@@ -5,5 +5,5 @@ variable "tags" {
 
 variable "dynamodb_table_name" {
   description = "The name of the ECS DynamoDB table."
-  type       = string
+  type        = string
 }
