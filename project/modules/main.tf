@@ -22,7 +22,7 @@ locals {
 
 module "iam" {
   source              = "./iam"
-  tags                = var.tags
+  tags                = local.tags
   dynamodb_table_name = var.dynamodb_table_name
 }
 
