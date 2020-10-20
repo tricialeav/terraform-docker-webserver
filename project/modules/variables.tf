@@ -19,6 +19,6 @@ variable "enabled" {
 }
 
 variable "dynamodb_table_name" {
-  descripton = "The name of the ECS DynamoDB table."
+  description = "The name of the ECS DynamoDB table."
   type       = string
 }
