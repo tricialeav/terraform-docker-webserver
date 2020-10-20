@@ -3,7 +3,7 @@
 ####################################################################
 
 resource "aws_iam_role" "ecs_service_role" {
-  name = "ecs_role"
+  name = "ecs_service_role"
 
   assume_role_policy = <<EOF
 {
@@ -28,7 +28,7 @@ EOF
 }
 
 resource "aws_iam_role" "ecs_task_role" {
-  name = "ecs_role"
+  name = "ecs_task_role"
 
   assume_role_policy = <<EOF
 {
@@ -51,7 +51,7 @@ EOF
 
 resource "aws_iam_role_policy" "ecs_service_policy" {
   name = "ecs_service_policy"
-  role = aws_iam_role.ecs_role.id
+  role = aws_iam_role.ecs_service_role.id
 
   policy = <<-EOF
 {
