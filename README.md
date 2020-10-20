@@ -24,4 +24,4 @@ This repo contains code to deploy the required AWS infrastructure for a web appl
 2. Users have set up their own AWS account, and have created a role that has permissions to deploy resources: 
 https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/
 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html
-2. Users have set up their own AWS Access Key ID and Secret Access Key in GitHub Secrets: https://docs.docker.com/get-docker/
+2. Users have set up their own AWS Access Key ID and Secret Access Key in GitHub Secrets: https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
