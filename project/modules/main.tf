@@ -21,8 +21,9 @@ locals {
 }
 
 module "iam" {
-  source = "./iam"
-  tags   = var.tags
+  source              = "./iam"
+  tags                = var.tags
+  dunamodb_table_name = var.dynamodb_table_name
 }
 
 module "vpc" {
