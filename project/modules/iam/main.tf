@@ -15,7 +15,7 @@ resource "aws_iam_role" "ecs_service_role" {
         "Service": [
             "ecs.amazonaws.com", 
             "ecs-tasks.amazonaws.com"
-        }
+        ]
       },
       "Effect": "Allow",
       "Sid": ""
@@ -59,30 +59,30 @@ resource "aws_iam_role_policy" "ecs_service_policy" {
     "Statement": [
         {
         "Action": [
-            "ec2:AttachNetworkInterface"
-            "ec2:CreateNetworkInterface"
-            "ec2:CreateNetworkInterfacePermission"
-            "ec2:DeleteNetworkInterface"
-            "ec2:DeleteNetworkInterfacePermission"
-            "ec2:Describe*"
-            "ec2:DetachNetworkInterface"
-            "elasticloadbalancing:DeregisterInstancesFromLoadBalancer"
-            "elasticloadbalancing:DeregisterTargets"
-            "elasticloadbalancing:Describe*"
-            "elasticloadbalancing:RegisterInstancesWithLoadBalancer"
-            "elasticloadbalancing:RegisterTargets"
-            "iam:PassRole"
-            "ecr:GetAuthorizationToken"
-            "ecr:BatchCheckLayerAvailability"
-            "ecr:GetDownloadUrlForLayer"
-            "ecr:BatchGetImage"
-            "logs:DescribeLogStreams"
-            "logs:CreateLogStream"
-            "logs:CreateLogGroup"
+            "ec2:AttachNetworkInterface",
+            "ec2:CreateNetworkInterface",
+            "ec2:CreateNetworkInterfacePermission",
+            "ec2:DeleteNetworkInterface",
+            "ec2:DeleteNetworkInterfacePermission",
+            "ec2:Describe*",
+            "ec2:DetachNetworkInterface",
+            "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+            "elasticloadbalancing:DeregisterTargets",
+            "elasticloadbalancing:Describe*",
+            "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+            "elasticloadbalancing:RegisterTargets",
+            "iam:PassRole",
+            "ecr:GetAuthorizationToken",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "logs:DescribeLogStreams",
+            "logs:CreateLogStream",
+            "logs:CreateLogGroup",
             "logs:PutLogEvents"
         ],
         "Effect": "Allow",
-        "Resource": "*"
+        "Resource": "*",
         "Condition": {"StringLike": {"iam:ResourceTag/name": "tf-docker"}}
         }
     ]
@@ -100,24 +100,24 @@ resource "aws_iam_role_policy" "ecs_task_policy" {
     "Statement": [
         {
         "Action": [
-            "ecr:GetAuthorizationToken"
-            "ecr:BatchCheckLayerAvailability"
-            "ecr:GetDownloadUrlForLayer"
-            "ecr:BatchGetImage"
-            "logs:CreateLogStream"
-            "logs:CreateLogGroup"
-            "logs:PutLogEvents"
+            "ecr:GetAuthorizationToken",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "logs:CreateLogStream",
+            "logs:CreateLogGroup",
+            "logs:PutLogEvents",
         ],
         "Effect": "Allow",
-        "Resource": "*"
+        "Resource": "*",
         "Condition": {"StringLike": {"iam:ResourceTag/name": "tf-docker"}}
         }, 
         {
         "Action": [
-            "dynamodb:Scan"
-            "dynamodb:Query"
-            "dynamodb:UpdateItem"
-            "dynamodb:GetItem"
+            "dynamodb:Scan",
+            "dynamodb:Query",
+            "dynamodb:UpdateItem",
+            "dynamodb:GetItem",
         ],
         "Effect": "Allow",
         "Resource": "arn:aws:dynamodb:*:*:table/${var.dynamodb_table_name}*"
