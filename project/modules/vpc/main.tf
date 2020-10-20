@@ -77,6 +77,6 @@ resource "aws_route_table_association" "private_subnet_rt" {
 resource "aws_vpc_endpoint" "dynamo_db" {
   vpc_id          = aws_vpc.vpc.id
   service_name    = "com.amazonaws.${var.region}.dynamodb"
-  route_table_ids = [aws_route_table.private_rt.*.id]
+  route_table_ids = aws_route_table.private_rt[*].id
   tags            = merge(var.tags, { type = "ecs_dynnamo_endpoint" })
 }
