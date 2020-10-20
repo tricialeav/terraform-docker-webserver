@@ -33,3 +33,8 @@ variable "availability_zones" {
   description = "The availabiltiy zone(s) for the subnets."
   type        = list(string)
 }
+
+variable "region" {
+  description = "The region used to deploy resources."
+  type        = string
+}

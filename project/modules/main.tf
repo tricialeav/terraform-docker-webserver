@@ -9,7 +9,6 @@ terraform {
   backend "s3" {}
 }
 
-# Configure the AWS Provider
 provider "aws" {
   region = var.region
 }
@@ -21,9 +20,17 @@ locals {
   }
 }
 
+module "iam" {
+  count               = var.enabled ? 1 : 0
+  source              = "./iam"
+  tags                = local.tags
+  dynamodb_table_name = var.dynamodb_table_name
+}
+
 module "vpc" {
   count                = var.enabled ? 1 : 0
   source               = "./vpc"
+  region               = var.region
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -32,9 +39,3 @@ module "vpc" {
   private_subnets      = ["10.0.2.0/24", "10.0.3.0/24"]
   tags                 = local.tags
 }
-
-# module "nat_gateway" {
-#   count  = var.enabled ? 1 : 0
-#   source = "./nat_gateway"
-#   tags   = local.tags
-# }
