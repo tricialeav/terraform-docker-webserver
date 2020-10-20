@@ -106,7 +106,7 @@ resource "aws_iam_role_policy" "ecs_task_policy" {
             "ecr:BatchGetImage",
             "logs:CreateLogStream",
             "logs:CreateLogGroup",
-            "logs:PutLogEvents",
+            "logs:PutLogEvents"
         ],
         "Effect": "Allow",
         "Resource": "*",
@@ -117,7 +117,7 @@ resource "aws_iam_role_policy" "ecs_task_policy" {
             "dynamodb:Scan",
             "dynamodb:Query",
             "dynamodb:UpdateItem",
-            "dynamodb:GetItem",
+            "dynamodb:GetItem"
         ],
         "Effect": "Allow",
         "Resource": "arn:aws:dynamodb:*:*:table/${var.dynamodb_table_name}*"
