@@ -21,6 +21,7 @@ locals {
 }
 
 module "iam" {
+  count               = var.enabled ? 1 : 0
   source              = "./iam"
   tags                = local.tags
   dynamodb_table_name = var.dynamodb_table_name
