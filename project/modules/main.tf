@@ -20,6 +20,11 @@ locals {
   }
 }
 
+module "iam" {
+  source = "./iam"
+  tags   = var.tags
+}
+
 module "vpc" {
   count                = var.enabled ? 1 : 0
   source               = "./vpc"
