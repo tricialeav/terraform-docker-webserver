@@ -22,3 +22,9 @@ variable "dynamodb_table_name" {
   description = "The name of the ECS DynamoDB table."
   type        = string
 }
+
+variable "image_tag" {
+  description = "The image tag."
+  type = string
+  default = "latest"
+}
