@@ -63,8 +63,8 @@ jobs:
         id: initProd
         if: github.ref == 'refs/heads/master'
         run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
-      - name: Terraform Validate
-        id: validate
+      - name: GitHub SHA to Terraform
+        id: terraformVarSet
         uses: hashicorp/terraform-github-actions@master
         with:
           tf_actions_version: 0.12.13
@@ -73,6 +73,8 @@ jobs:
           tf_actions_comment: true
         env:
           TF_VARS_image_tag = ${{ github.sha }}
+      - name: Terraform Validate
+        id: validateTerraform
         run: terraform validate
       - name: Terraform Plan - Dev
         id: planDev
