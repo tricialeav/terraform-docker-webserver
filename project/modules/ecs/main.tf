@@ -59,13 +59,13 @@ module "ecs-fargate-task-definition" {
   port_mappings    = var.port_mappings
   name_prefix      = var.env
   log_configuration = {
-    log_driver = "${var.log_driver}"
+    logDriver = var.log_driver
     options = {
       awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
       awslogs-region        = var.region
       awslogs-stream-prefix = "awslogs-${var.container_name}-service"
     }
-    secret_options = []
+    secretOptions = []
   }
   essential = var.essential
 }
