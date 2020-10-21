@@ -48,7 +48,7 @@ jobs:
           aws-region: us-east-2
       - name: cd modules
         id: cd
-        run: cd ./modules 
+        run: cd modules 
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
