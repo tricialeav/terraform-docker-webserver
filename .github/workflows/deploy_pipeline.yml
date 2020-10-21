@@ -32,6 +32,7 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   terraform-validation:
+    needs: build-push-image
     runs-on: ubuntu-latest
     name: Validates and applies Terraform to AWS
     steps:
