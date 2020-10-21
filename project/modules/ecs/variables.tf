@@ -1,6 +1,16 @@
+variable "region" {
+  description = "The region used to deploy resources."
+  type        = string
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resource."
   type        = map(string)
+}
+
+variable "env" {
+  description = "The environment to deploy into."
+  type        = string
 }
 
 variable "vpc_id" {

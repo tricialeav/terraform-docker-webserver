@@ -23,9 +23,9 @@ resource "aws_security_group" "ecs" {
 
 resource "aws_ecs_cluster" "web_app" {
   name               = "web_app_cluster"
-  capacity_providers = "FARGATE"
-  setting = {
-    name  = "containerInsights",
+  capacity_providers = ["FARGATE"]
+  setting {
+    name  = "containerInsights"
     value = "enabled"
   }
   tags = var.tags
@@ -57,7 +57,7 @@ module "ecs-fargate-task-definition" {
   container_image  = var.container_image
   container_name   = var.container_name
   port_mappings    = var.port_mappings
-  name_prefix = var.env
+  name_prefix      = var.env
   log_configuration = {
     log_driver = var.log_driver
     options = {
