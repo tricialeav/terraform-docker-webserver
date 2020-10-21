@@ -1,5 +1,36 @@
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
+
+  backend "s3" {
+    bucket         = "terraform-docker-webserver-dev-terraform-tf-state"
+    key            = "deployments/environments/dev/ecr/terraform.tfstate"
+    region         = "us-west-2"
+    encrypt        = true
+    dynamodb_table = "terraform-docker-webserver-dev-terraform-tf-state-lock"
+  }
+}
+
+resource "aws_ecr_repository" "ecr" {
+  name                 = "web-app"
+  image_tag_mutability = "IMMUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+
+  tags = {
+    name = "tf-docker"
+    env  = "dev"
+  }
+}
+
 resource "aws_ecr_repository_policy" "ecr-repo-policy" {
-  repository = var.ecr_name
+  repository = aws_ecr_repository.ecr.name
   policy     = <<EOF
   {
     "Version": "2008-10-17",
@@ -22,18 +53,4 @@ resource "aws_ecr_repository_policy" "ecr-repo-policy" {
     ]
   }
   EOF
-}
-
-resource "aws_ecr_repository" "ecr" {
-  name                 = "web-app"
-  image_tag_mutability = "IMMUTABLE"
-
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-
-  tags = {
-    name = "tf-docker"
-    env  = "dev"
-  }
 }
