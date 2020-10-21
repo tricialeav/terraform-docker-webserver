@@ -25,6 +25,6 @@ variable "dynamodb_table_name" {
 
 variable "image_tag" {
   description = "The image tag."
-  type = string
-  default = "latest"
+  type        = string
+  default     = "latest"
 }
