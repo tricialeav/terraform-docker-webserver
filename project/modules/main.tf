@@ -45,11 +45,12 @@ module "vpc" {
 module "ecs" {
   count           = var.enabled ? 1 : 0
   source          = "./ecs"
+  depends_on      = module.vpc
   region          = var.region
   tags            = local.tags
   env             = var.env
-  vpc_id          = module.vpc.vpc_id
-  vpc_cidr        = module.vpc.vpc_cidr
+  vpc_id          = module.vpc[0].vpc_id
+  vpc_cidr        = module.vpc[0].vpc_cidr
   container_image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/web-app:${var.image_tag}"
   container_name  = "web-app"
   port_mappings = [
