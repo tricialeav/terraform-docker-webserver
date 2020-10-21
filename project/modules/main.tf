@@ -27,7 +27,6 @@ module "iam" {
   source              = "./iam"
   tags                = local.tags
   dynamodb_table_name = join("-", [var.dynamodb_table_name, var.env])
-  ecr_name            = modules.ecr.ecr_name
 }
 
 module "vpc" {

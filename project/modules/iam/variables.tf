@@ -7,8 +7,3 @@ variable "dynamodb_table_name" {
   description = "The name of the ECS DynamoDB table."
   type        = string
 }
-
-variable "ecr_name" {
-  description = "The name of the ECR repository."
-  type        = string
-}
