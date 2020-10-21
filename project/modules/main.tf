@@ -51,6 +51,7 @@ module "ecs" {
   vpc_cidr        = module.vpc.vpc_cidr
   container_image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/web-app:${var.image_tag}"
   container_name  = "web-app"
+  name-prefix     = var.env
   port_mappings = [
     {
       "containerPort" : 8080,
@@ -58,13 +59,6 @@ module "ecs" {
       "protocol" : "http"
     }
   ]
-  log_configuration = {
-    logDriver = "awslogs"
-    options = {
-      awslogs-group         = ""
-      awslogs-region        = var.region
-      awslogs-stream-prefix = "awslogs-mythicalmysfits-service"
-    }
-    essential = true
-  }
+  log_driver = "awslogs"
+  essential  = "true"
 }

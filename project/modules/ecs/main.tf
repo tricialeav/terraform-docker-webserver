@@ -55,4 +55,15 @@ module "ecs-fargate-task-definition" {
   container_cpu    = 256
   container_memory = 512
   container_image  = var.container_image
+  container_name   = var.container_name
+  port_mappings    = var.port_mappings
+  log_configuration = {
+    log_driver = var.log_driver
+    options = {
+      awslogs-group         = aws_cloudwatch_log_group.ecs_logs.name
+      awslogs-region        = var.region
+      awslogs-stream-prefix = "awslogs-${var.container_name}-service"
+    }
+  }
+  essential = var.essential
 }
