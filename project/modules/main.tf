@@ -45,7 +45,6 @@ module "vpc" {
 module "ecs" {
   count           = var.enabled ? 1 : 0
   source          = "./ecs"
-  depends_on      = module.vpc
   region          = var.region
   tags            = local.tags
   env             = var.env
