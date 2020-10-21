@@ -65,8 +65,14 @@ jobs:
         run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
       - name: Terraform Validate
         id: validate
+        uses: hashicorp/terraform-github-actions@master
         with:
-          TF_VARS_IMAGE_TAG = ${{ github.sha }}
+          tf_actions_version: 0.12.13
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+        env:
+          TF_VARS_image_tag = ${{ github.sha }}
         run: terraform validate
       - name: Terraform Plan - Dev
         id: planDev
