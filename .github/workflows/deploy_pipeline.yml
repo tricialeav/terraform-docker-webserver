@@ -73,7 +73,7 @@ jobs:
           tf_actions_working_dir: '.'
           tf_actions_comment: true
         env:
-          TF_VARS_image_tag = ${{ github.sha }}
+          TF_VARS_image_tag: ${{ github.sha }}
       - name: Terraform Validate
         id: validateTerraform
         run: terraform validate
