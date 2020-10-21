@@ -5,7 +5,7 @@ variable "prefix" {
 }
 
 variable "env" {
-  description = "The environmennt to deploy resources into."
+  description = "The environment to deploy resources into."
   type        = string
   default     = "dev"
 }
