@@ -25,6 +25,7 @@ module "iam" {
   source              = "./iam"
   tags                = local.tags
   dynamodb_table_name = var.dynamodb_table_name
+  ecr_name            = modules.ecr.ecr_name
 }
 
 module "vpc" {
@@ -39,3 +40,29 @@ module "vpc" {
   private_subnets      = ["10.0.2.0/24", "10.0.3.0/24"]
   tags                 = local.tags
 }
+
+# module "ecs" {
+#   count           = var.enabled ? 1 : 0
+#   source          = "./ecs"
+#   tags            = local.tags
+#   vpc_id          = module.vpc.vpc_id
+#   vpc_cidr        = module.vpc.vpc_cidr
+#   container_image = "ubuntu"
+#   container_name  = "web-app"
+#   port_mappings = [
+#     {
+#       "containerPort" : 8080,
+#       "hostPort" : 8080,
+#       "protocol" : "http"
+#     }
+#   ]
+#   log_configuration = {
+#     logDriver = "awslogs"
+#     options = {
+#       awslogs-group         = ""
+#       awslogs-region        = var.region
+#       awslogs-stream-prefix = "awslogs-mythicalmysfits-service"
+#     }
+#     essential = true
+#   }
+# }

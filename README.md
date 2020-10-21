@@ -25,3 +25,11 @@ This repo contains code to deploy the required AWS infrastructure for a web appl
 https://aws.amazon.com/premiumsupport/knowledge-center/create-and-activate-aws-account/
 https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html
 2. Users have set up their own AWS Access Key ID and Secret Access Key in GitHub Secrets: https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
+
+# Acknowledgments
+
+Much of the underlying infrastructure was modeled after the below AWS tutorial: 
+
+https://aws.amazon.com/getting-started/hands-on/build-modern-app-fargate-lambda-dynamodb-python/module-two/
+
+https://github.com/abaird986/aws-modern-application-workshop/blob/master/module-2/
