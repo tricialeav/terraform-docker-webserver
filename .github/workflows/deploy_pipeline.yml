@@ -2,8 +2,7 @@ name: Deploy-Pipeline
 
 on:
   push:
-    branches: 
-    - '*'
+    branches: '*'
 
 defaults:
   run:
