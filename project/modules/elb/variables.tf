@@ -29,7 +29,7 @@ variable "tg_port" {
 }
 
 variable "tg_protocol" {
-  descirption = "The protocol to use for routing traffic to the targets. Should be one of \"TCP\", \"TLS\", \"UDP\", \"TCP_UDP\", \"HTTP\" or \"HTTPS\". Required when target_type is instance or ip. Does not apply when target_type is lambda."
+  description = "The protocol to use for routing traffic to the targets. Should be one of \"TCP\", \"TLS\", \"UDP\", \"TCP_UDP\", \"HTTP\" or \"HTTPS\". Required when target_type is instance or ip. Does not apply when target_type is lambda."
   type        = string
 }
 
