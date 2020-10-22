@@ -51,7 +51,7 @@ module "ecs" {
   vpc_id          = module.vpc[0].vpc_id
   vpc_cidr        = module.vpc[0].vpc_cidr
   container_image = "${data.aws_caller_identity.current.account_id}.dkr.ecr.us-west-2.amazonaws.com/web-app:${var.image_tag}"
-  container_name  = "web-app"
+  container_name  = join("-", [var.prefix, var.env])
   port_mappings = [
     {
       "containerPort" : 8080,
@@ -61,4 +61,25 @@ module "ecs" {
   ]
   log_driver = "awslogs"
   essential  = "true"
+}
+
+module "public_load_balancer" {
+  count           = var.enabled ? 1 : 0
+  source = "./elb"
+  lb_name = join("-", [var.prefix, var.env])
+  lb_internal = true
+  lb_type = "network"
+  subnets = ["10.0.0.0/24", "10.0.1.0/24"]
+  vpc_id          = module.vpc[0].vpc_id
+  tg_port = 8080
+  tg_protocol = "TCP"
+  target_type = "ip"
+  health_check = {
+    enabled: true,
+    interval: 10
+    path: "/"
+    protocol: "HTTP"
+    healthy_threshold: 3
+    unhealthy_threshold: 3
+  }
 }
