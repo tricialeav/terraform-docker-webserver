@@ -64,22 +64,22 @@ module "ecs" {
 }
 
 module "public_load_balancer" {
-  count           = var.enabled ? 1 : 0
-  source = "./elb"
-  lb_name = join("-", [var.prefix, var.env])
+  count       = var.enabled ? 1 : 0
+  source      = "./elb"
+  lb_name     = join("-", [var.prefix, var.env])
   lb_internal = true
-  lb_type = "network"
-  subnets = ["10.0.0.0/24", "10.0.1.0/24"]
-  vpc_id          = module.vpc[0].vpc_id
-  tg_port = 8080
+  lb_type     = "network"
+  subnets     = ["10.0.0.0/24", "10.0.1.0/24"]
+  vpc_id      = module.vpc[0].vpc_id
+  tg_port     = 8080
   tg_protocol = "TCP"
   target_type = "ip"
   health_check = {
-    enabled: true,
-    interval: 10
-    path: "/"
-    protocol: "HTTP"
-    healthy_threshold: 3
-    unhealthy_threshold: 3
+    enabled : true,
+    interval : 10
+    path : "/"
+    protocol : "HTTP"
+    healthy_threshold : 3
+    unhealthy_threshold : 3
   }
 }
