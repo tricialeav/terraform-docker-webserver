@@ -75,11 +75,11 @@ module "public_load_balancer" {
   tg_protocol = "TCP"
   target_type = "ip"
   health_check = {
-    enabled : true,
-    interval : 10
-    path : "/"
-    protocol : "HTTP"
-    healthy_threshold : 3
-    unhealthy_threshold : 3
+    enabled             = true
+    interval            = 10
+    path                = "/"
+    protocol            = "HTTP"
+    healthy_threshold   = 3
+    unhealthy_threshold = 3
   }
 }

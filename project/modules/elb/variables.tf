@@ -42,3 +42,8 @@ variable "health_check" {
   description = "Health check configuration settings."
   type        = map(any)
 }
+
+variable "tags" {
+  description = "A map of tags to assign to the resource."
+  type        = map(string)
+}
