@@ -24,7 +24,7 @@ variable "vpc_id" {
 }
 
 variable "tg_port" {
-  descirption = "The port on which targets receive traffic, unless overridden when registering a specific target. Required when target_type is instance or ip. Does not apply when target_type is lambda."
+  description = "The port on which targets receive traffic, unless overridden when registering a specific target. Required when target_type is instance or ip. Does not apply when target_type is lambda."
   type        = number
 }
 
