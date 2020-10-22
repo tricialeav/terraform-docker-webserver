@@ -82,4 +82,5 @@ module "public_load_balancer" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
   }
+  tags = local.tags
 }
