@@ -13,7 +13,7 @@ variable "lb_type" {
   type        = string
 }
 
-variable "lb_subnets" {
+variable "subnets" {
   description = "A list of subnet IDs to attach to the LB. Updates on type network forces a recreation of the resource."
   type        = list(string)
 }
