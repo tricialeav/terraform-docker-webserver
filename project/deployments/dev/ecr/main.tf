@@ -16,7 +16,7 @@ terraform {
 }
 
 resource "aws_ecr_repository" "ecr" {
-  name                 = "web-app"
+  name                 = "web-app-dev"
   image_tag_mutability = "IMMUTABLE"
 
   image_scanning_configuration {
