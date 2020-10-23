@@ -1,0 +1,131 @@
+name: Deploy-Pipeline
+
+on:
+  push:
+    branches: '*'
+
+defaults:
+  run:
+    working-directory: project
+
+jobs:
+  build-push-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push image to Amazon ECR Dev
+        if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: web-app-dev
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build, tag, and push image to Amazon ECR QA
+        if: github.ref == 'refs/heads/release'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: web-app-qa
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Build, tag, and push image to Amazon ECR Prod
+        if: github.ref == 'refs/heads/master'
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: web-app-qa
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+  terraform-validation:
+    needs: build-push-image
+    runs-on: ubuntu-latest
+    name: Validates and applies Terraform to AWS
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+      - name: Terraform Format
+        working-directory: project/modules
+        id: fmt
+        run: terraform fmt -check
+      - name: Terraform Init - Dev
+        working-directory: project/modules
+        id: initDev
+        if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
+        run: terraform init -backend-config="bucket=terraform-docker-webserver-dev-terraform-tf-state" -backend-config="key=deployments/environments/dev/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-dev-terraform-tf-state-lock"
+      - name: Terraform Init - QA
+        working-directory: project/modules
+        id: initQA
+        if: github.ref == 'refs/heads/release'
+        run: terraform init -backend-config="bucket=terraform-docker-webserver-qa-terraform-tf-state" -backend-config="key=deployments/environments/qa/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-qa-terraform-tf-state-lock"
+      - name: Terraform Init - Prod
+        working-directory: project/modules
+        id: initProd
+        if: github.ref == 'refs/heads/master'
+        run: terraform init -backend-config="bucket=terraform-docker-webserver-prod-terraform-tf-state" -backend-config="key=deployments/environments/prod/project/terraform.tfstate" -backend-config="region=us-west-2" -backend-config="encrypt=true" -backend-config="dynamodb_table=terraform-docker-webserver-prod-terraform-tf-state-lock"
+      - name: GitHub SHA to Terraform
+        id: terraformVarSet
+        uses: hashicorp/terraform-github-actions@master
+        with:
+          tf_actions_version: 0.12.13
+          tf_actions_subcommand: 'init'
+          tf_actions_working_dir: '.'
+          tf_actions_comment: true
+        env:
+          TF_VARS_image_tag: ${{ github.sha }}
+      - name: Terraform Validate
+        working-directory: project/modules
+        id: validateTerraform
+        run: terraform validate
+      - name: Terraform Plan - Dev
+        working-directory: project/modules
+        id: planDev
+        if: github.ref != 'refs/heads/release' && github.ref != 'refs/heads/master'
+        run: terraform plan -var-file="dev.tfvars"
+      # - name: Terraform Apply - Dev
+      #   working-directory: project/modules
+      #   id: applyDev
+      #   if: github.ref == 'refs/heads/dev'
+      #   run: terraform apply -var-file="dev.tfvars" --auto-approve -input=false
+      - name: Terraform Plan - QA
+        working-directory: project/modules
+        id: planQa
+        if: github.ref == 'refs/heads/release'
+        run: terraform plan -var-file="qa.tfvars"
+      # - name: Terraform Apply - QA
+      #   working-directory: project/modules
+      #   id: applyQA
+      #   if: github.ref == 'refs/heads/release'
+      #   run: terraform apply -var-file="qa.tfvars" --auto-approve -input=false
+      - name: Terraform Plan - Prod
+        working-directory: project/modules
+        id: planMaster
+        if: github.ref == 'refs/heads/master'
+        run: terraform plan -var-file="prod.tfvars"
+      # - name: Terraform Apply - Prod
+      #   working-directory: project/modules
+      #   id: applyProd
+      #   if: github.ref == 'refs/heads/master'
+      #   run: terraform apply -var-file="dev.tfvars" --auto-approve -input=false
+        
