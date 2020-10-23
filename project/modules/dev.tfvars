@@ -1,5 +1,5 @@
 region              = "us-west-2"
 env                 = "dev"
 prefix              = "tf-docker"
-enabled             = true
+enabled             = false
 dynamodb_table_name = "ecs_dynamo_table"
