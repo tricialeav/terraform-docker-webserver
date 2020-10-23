@@ -96,7 +96,7 @@ jobs:
         run: terraform plan -var-file="qa.tfvars"
       # - name: Terraform Apply - QA
       #   working-directory: project/modules
-      #   id: applyDev
+      #   id: applyQA
       #   if: github.ref == 'refs/heads/release'
       #   run: terraform apply -var-file="qa.tfvars" --auto-approve -input=false
       - name: Terraform Plan - Prod
@@ -104,9 +104,9 @@ jobs:
         id: planMaster
         if: github.ref == 'refs/heads/master'
         run: terraform plan -var-file="prod.tfvars"
-      # - name: Terraform Apply - Dev
+      # - name: Terraform Apply - Prod
       #   working-directory: project/modules
-      #   id: applyDev
+      #   id: applyProd
       #   if: github.ref == 'refs/heads/master'
       #   run: terraform apply -var-file="dev.tfvars" --auto-approve -input=false
         
